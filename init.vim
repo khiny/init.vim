@@ -11,8 +11,9 @@ Plug 'inkarkat/vim-ingo-library'
 "Plug 'yuttie/comfortable-motion.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-outline'
+"Plug 'Shougo/unite.vim'
+"Plug 'Shougo/unite-outline'
+"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/denite.nvim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -200,25 +201,28 @@ let g:airline_right_sep=''
 " }}}
 " mark {{{
 let g:mwDefaultHighlightingPalette = 'maximum'
+au Bufenter * :MarkLoad
 " }}}
 " unite {{{
-nnoremap <silent> <leader>bf :<C-u>Unite file file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
+"nnoremap <silent> <leader>bf :<C-u>Unite file file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
 "nnoremap <leader>f :<C-u>Unite file file_rec/async:vendor/qcom/proprietary/mm-3a-core/ file_rec/async:vendor/qcom/proprietary/mm-camerasdk/ file_rec/async:vendor/qcom/proprietary/mm-camera/mm-camera2/ file_rec/async:vendor/qcom/proprietary/mm-camera-core file_rec/async:hardware/qcom/camera file_rec/async:kernel/msm-3.18/drivers/media/platform/msm/camera_v2 file_rec/async:kernel/msm-3.18/include/media<CR>
-nnoremap <silent> <leader>bb :<C-u>Unite buffer bookmark<CR>
-nnoremap <silent> <leader>bo :<C-u>Unite outline<CR><C-w><S-_>
-nnoremap <silent> <leader><Space> :Unite grep:.<CR>
+"nnoremap <silent> <leader>bb :<C-u>Unite buffer bookmark<CR>
+"nnoremap <silent> <leader>bo :<C-u>Unite outline<CR><C-w><S-_>
+"nnoremap <silent> <leader><Space> :Unite grep:.<CR>
 "let g:unite_source_rec_async_command = ['ack', '-f', '--nofilter']
-let g:unite_source_rec_async_command = ['rg']
-let g:unite_source_grep_command='rg'
+"let g:unite_source_rec_async_command = ['rg']
+"let g:unite_source_grep_command='rg'
 "let g:unite_source_grep_default_opts='-i --no-heading --no-color -k -H'
-let g:unite_source_grep_default_opts='--nogroup --nocolor'
-let g:unite_source_grep_recursive_opt=''
-let g:unite_source_grep_encoding = 'utf-8'
+"let g:unite_source_grep_default_opts='--nogroup --nocolor'
+"let g:unite_source_grep_recursive_opt=''
+"let g:unite_source_grep_encoding = 'utf-8'
 " }}}
 " denite {{{
-"nnoremap <leader>f :<C-u>denite file file_rec/async:vendor/qcom/proprietary/mm-3a-core/ file_rec/async:vendor/qcom/proprietary/mm-camerasdk/ file_rec/async:vendor/qcom/proprietary/mm-camera/mm-camera2/ file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
-"nnoremap <leader>b :<C-u>denite buffer bookmark<CR>
-"nnoremap <leader>o :<C-u>denite outline<CR><C-w><S-_>
+nnoremap <silent> <leader>bf :<C-u>Denite file_rec<CR>
+"nnoremap <silent> <leader>bf :<C-u>Denite file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
+"nnoremap <leader>bf :<C-u>denite file file_rec/async:vendor/qcom/proprietary/mm-3a-core/ file_rec/async:vendor/qcom/proprietary/mm-camerasdk/ file_rec/async:vendor/qcom/proprietary/mm-camera/mm-camera2/ file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
+nnoremap <leader>bb :<C-u>Denite buffer<CR>
+nnoremap <leader>bo :<C-u>Denite outline<CR><C-w><S-_>
 "nnoremap <leader><Space> :denite grep:.<CR>
 " }}}
 " vim-leader-guide {{{
