@@ -3,6 +3,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'drewtempelmeyer/palenight.vim'
 Plug 'https://github.com/chazy/cscope_maps.git'
 "Plug 'Shougo/vimfiler.vim'
 "Plug 'romgrk/vimfiler-prompt'
@@ -37,6 +38,8 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'majutsushi/tagbar'
 Plug 'hecal3/vim-leader-guide'
 Plug 'Yggdroot/indentLine'
+"Plug 'andymass/vim-matchup'
+Plug 'andymass/matchup.vim'
 call plug#end()
 "}}}
 
@@ -90,8 +93,13 @@ set modelines=1
 "packadd vimball
 set rtp+=~/.fzf
 
-"set background=dark
-colorscheme PaperColor
+set background=dark
+"colorscheme PaperColor
+colorscheme palenight
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+if (has("termguicolors"))
+  set termguicolors
+endif
 
 au GUIEnter * simalt ~x
 set clipboard=unnamed
@@ -191,7 +199,8 @@ nnoremap <leader>t :TagbarToggle<CR>
 " }}}
 " airline {{{
 "let g:airline_powerline_fonts = 1
-let g:airline_theme = 'papercolor'
+"let g:airline_theme = 'papercolor'
+let g:airline_theme = 'onedark'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 "if !exists('g:airline_symbols')
@@ -201,7 +210,7 @@ let g:airline_right_sep=''
 " }}}
 " mark {{{
 let g:mwDefaultHighlightingPalette = 'maximum'
-au Bufenter * :MarkLoad
+"au Bufenter * :MarkLoad
 " }}}
 " unite {{{
 "nnoremap <silent> <leader>bf :<C-u>Unite file file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
@@ -269,4 +278,14 @@ let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.
 let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
 let g:deoplete#sources#clang#std#cpp = 'c++14'
 let g:deoplete#enable_at_startup = 1
+" }}}
+" indentLine {{{
+let g:indentLine_fileType = ['c', 'cpp', 'h']
+" }}}
+" fzf {{{
+"nnoremap <leader>bb :<C-u>Buffers<CR>
+" }}}
+" palenight {{{
+let g:palenight_terminal_italics=1
+hi MatchParen cterm=italic gui=italic
 " }}}
