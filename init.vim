@@ -62,9 +62,12 @@ set number              " show line numbers
 set rnu
 set showmatch           " highlight matching [{()}]
 set ignorecase
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+au Bufenter *.c set tabstop=2
+au Bufenter *.c set shiftwidth=2
+au Bufenter *.c set softtabstop=2
+au Bufenter *.cpp set tabstop=4
+au Bufenter *.cpp set shiftwidth=4
+au Bufenter *.cpp set softtabstop=4
 set autoindent
 set cindent
 set smartindent
@@ -230,7 +233,7 @@ let g:mwDefaultHighlightingPalette = 'maximum'
 nnoremap <silent> <leader>bf :<C-u>Denite file_rec<CR>
 "nnoremap <silent> <leader>bf :<C-u>Denite file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
 "nnoremap <leader>bf :<C-u>denite file file_rec/async:vendor/qcom/proprietary/mm-3a-core/ file_rec/async:vendor/qcom/proprietary/mm-camerasdk/ file_rec/async:vendor/qcom/proprietary/mm-camera/mm-camera2/ file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
-nnoremap <leader>bb :<C-u>Denite buffer<CR>
+"nnoremap <leader>bb :<C-u>Denite buffer<CR>
 nnoremap <leader>bo :<C-u>Denite outline<CR><C-w><S-_>
 "nnoremap <leader><Space> :denite grep:.<CR>
 " }}}
@@ -274,8 +277,8 @@ nnoremap <silent> <leader> :<c-u>LeaderGuide ','<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual ','<CR>
 " }}}
 " deoplete {{{
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so.1'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+let g:deoplete#sources#clang#libclang_path = '/home001/sy30.park/.linuxbrew/Cellar/llvm/5.0.0_1/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/home001/sy30.park/.linuxbrew/Cellar/llvm/5.0.0_1/lib/clang'
 let g:deoplete#sources#clang#std#cpp = 'c++14'
 let g:deoplete#enable_at_startup = 1
 " }}}
@@ -283,7 +286,7 @@ let g:deoplete#enable_at_startup = 1
 let g:indentLine_fileType = ['c', 'cpp', 'h']
 " }}}
 " fzf {{{
-"nnoremap <leader>bb :<C-u>Buffers<CR>
+nnoremap <leader>bb :<C-u>Buffers<CR>
 " }}}
 " palenight {{{
 let g:palenight_terminal_italics=1
