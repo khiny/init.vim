@@ -12,6 +12,7 @@ Plug 'inkarkat/vim-ingo-library'
 "Plug 'yuttie/comfortable-motion.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'Shougo/echodoc.vim'
 "Plug 'Shougo/unite.vim'
 "Plug 'Shougo/unite-outline'
 "Plug 'Shougo/vimproc.vim', {'do' : 'make'}
@@ -20,6 +21,7 @@ if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-clang', { 'for': 'cpp' }
   Plug 'zchee/libclang-python3'
+"  Plug 'tweekmonster/deoplete-clang2'
   Plug 'Shougo/neoinclude.vim'
 else
 "  Plug 'Shougo/deoplete.nvim'
@@ -32,7 +34,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
+Plug 'jsfaint/gen_tags.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'majutsushi/tagbar'
@@ -118,6 +121,7 @@ augroup END
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 
 set mouse=a
+set noshowmode
 "}}}
 " tab {{{
 "" http://qiita.com/wadako111/items/755e753677dd72d8036d
@@ -277,8 +281,8 @@ nnoremap <silent> <leader> :<c-u>LeaderGuide ','<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual ','<CR>
 " }}}
 " deoplete {{{
-let g:deoplete#sources#clang#libclang_path = '/home001/sy30.park/.linuxbrew/Cellar/llvm/5.0.0_1/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/home001/sy30.park/.linuxbrew/Cellar/llvm/5.0.0_1/lib/clang'
+let g:deoplete#sources#clang#libclang_path = '/home001/soyoung.baek/.linuxbrew/Cellar/llvm/5.0.0_1/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/home001/soyoung.baek/.linuxbrew/Cellar/llvm/5.0.0_1/lib/clang'
 let g:deoplete#sources#clang#std#cpp = 'c++14'
 let g:deoplete#enable_at_startup = 1
 " }}}
@@ -291,4 +295,13 @@ nnoremap <leader>bb :<C-u>Buffers<CR>
 " palenight {{{
 let g:palenight_terminal_italics=1
 hi MatchParen cterm=italic gui=italic
+" }}}
+" echodoc {{{
+let g:echodoc#enable_at_startup=1
+" }}}
+" gen_tags {{{
+let g:gen_tags#use_cache_dir=0
+let g:gen_tags#gtags_auto_gen=1
+let g:gen_tags#blacklist = ['$HOME']
+"let g:gen_tags#verbose=1
 " }}}
