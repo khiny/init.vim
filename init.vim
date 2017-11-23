@@ -92,6 +92,19 @@ elseif filereadable("./GTAGS")
   cs add ./GTAGS
 endif
 
+if filereadable("./vendor/qcom/proprietary/camx/.git/tags_dir/GTAGS")
+  cs add ./vendor/qcom/proprietary/camx/.git/tags_dir/GTAGS
+endif
+if filereadable("./vendor/qcom/proprietary/camx-lib/.git/tags_dir/GTAGS")
+  cs add ./vendor/qcom/proprietary/camx-lib/.git/tags_dir/GTAGS
+endif
+if filereadable("./vendor/qcom/proprietary/camx-lib-stats/.git/tags_dir/GTAGS")
+  cs add ./vendor/qcom/proprietary/camx-lib-stats/.git/tags_dir/GTAGS
+endif
+if filereadable("./vendor/qcom/proprietary/chi-cdk/.git/tags_dir/GTAGS")
+  cs add ./vendor/qcom/proprietary/chi-cdk/.git/tags_dir/GTAGS
+endif
+
 set foldmethod=marker
 set foldlevel=0
 set modelines=1
@@ -100,6 +113,7 @@ set modelines=1
 set rtp+=~/.fzf
 
 set background=dark
+"set background=light
 "colorscheme PaperColor
 colorscheme palenight
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -234,12 +248,21 @@ let g:mwDefaultHighlightingPalette = 'maximum'
 "let g:unite_source_grep_encoding = 'utf-8'
 " }}}
 " denite {{{
-nnoremap <silent> <leader>bf :<C-u>Denite file_rec<CR>
-"nnoremap <silent> <leader>bf :<C-u>Denite file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
-"nnoremap <leader>bf :<C-u>denite file file_rec/async:vendor/qcom/proprietary/mm-3a-core/ file_rec/async:vendor/qcom/proprietary/mm-camerasdk/ file_rec/async:vendor/qcom/proprietary/mm-camera/mm-camera2/ file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
-"nnoremap <leader>bb :<C-u>Denite buffer<CR>
-nnoremap <leader>bo :<C-u>Denite outline<CR><C-w><S-_>
-"nnoremap <leader><Space> :denite grep:.<CR>
+call denite#custom#var('file_rec', 'command',
+  \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'default_opts',
+  \ ['-i', '--vimgrep'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
+"nnoremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/mm-3a-core file_rec:vendor/qcom/proprietary/mm-camerasdk file_rec:vendor/qcom/proprietary/mm-camera/mm-camera2 file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
+nnoremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/camx file_rec:vendor/qcom/proprietary/camx-lib file_rec:vendor/qcom/proprietary/chi-cdk file_rec:vendor/qcom/proprietary/camx-lib-stats -highlight-mode-insert=IncSearch<CR>
+nnoremap <leader>bb :<C-u>Denite buffer -highlight-mode-insert=IncSearch<CR>
+nnoremap <leader>bo :<C-u>Denite outline -highlight-mode-insert=IncSearch<CR>
+nnoremap <leader>b<Space> :Denite grep<CR>
 " }}}
 " vim-leader-guide {{{
 " Define prefix dictionary
@@ -281,8 +304,8 @@ nnoremap <silent> <leader> :<c-u>LeaderGuide ','<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual ','<CR>
 " }}}
 " deoplete {{{
-let g:deoplete#sources#clang#libclang_path = '/home001/soyoung.baek/.linuxbrew/Cellar/llvm/5.0.0_1/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/home001/soyoung.baek/.linuxbrew/Cellar/llvm/5.0.0_1/lib/clang'
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.4/lib/libclang.so.1'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.4/lib/clang'
 let g:deoplete#sources#clang#std#cpp = 'c++14'
 let g:deoplete#enable_at_startup = 1
 " }}}
@@ -290,7 +313,7 @@ let g:deoplete#enable_at_startup = 1
 let g:indentLine_fileType = ['c', 'cpp', 'h']
 " }}}
 " fzf {{{
-nnoremap <leader>bb :<C-u>Buffers<CR>
+"nnoremap <leader>bb :<C-u>Buffers<CR>
 " }}}
 " palenight {{{
 let g:palenight_terminal_italics=1
