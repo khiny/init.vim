@@ -4,7 +4,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'drewtempelmeyer/palenight.vim'
-Plug 'https://github.com/chazy/cscope_maps.git'
+"Plug 'https://github.com/chazy/cscope_maps.git'
 "Plug 'Shougo/vimfiler.vim'
 "Plug 'romgrk/vimfiler-prompt'
 Plug 'inkarkat/vim-mark'
@@ -35,7 +35,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
 "Plug 'ludovicchabant/vim-gutentags'
-Plug 'jsfaint/gen_tags.vim'
+"Plug 'jsfaint/gen_tags.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'majutsushi/tagbar'
@@ -62,7 +62,7 @@ snoremap <S-Up>     <C-O>gk
 snoremap <S-Down>   <C-O>gj
 
 set number              " show line numbers
-set rnu
+"set rnu
 set showmatch           " highlight matching [{()}]
 set ignorecase
 au Bufenter *.c set tabstop=2
@@ -90,19 +90,6 @@ if filereadable("./cscope.out")
 elseif filereadable("./GTAGS")
   set csprg=gtags-cscope
   cs add ./GTAGS
-endif
-
-if filereadable("./vendor/qcom/proprietary/camx/.git/tags_dir/GTAGS")
-  cs add ./vendor/qcom/proprietary/camx/.git/tags_dir/GTAGS
-endif
-if filereadable("./vendor/qcom/proprietary/camx-lib/.git/tags_dir/GTAGS")
-  cs add ./vendor/qcom/proprietary/camx-lib/.git/tags_dir/GTAGS
-endif
-if filereadable("./vendor/qcom/proprietary/camx-lib-stats/.git/tags_dir/GTAGS")
-  cs add ./vendor/qcom/proprietary/camx-lib-stats/.git/tags_dir/GTAGS
-endif
-if filereadable("./vendor/qcom/proprietary/chi-cdk/.git/tags_dir/GTAGS")
-  cs add ./vendor/qcom/proprietary/chi-cdk/.git/tags_dir/GTAGS
 endif
 
 set foldmethod=marker
@@ -184,6 +171,36 @@ map <silent> [Tag]n :tabnext<CR>
 map <silent> [Tag]p :tabprevious<CR>
 " tp ???Ϋ???
 "}}}
+" Gtags {{{
+if filereadable("./GTAGS")
+    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+    nmap <C-]>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-]>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-]>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+
+    nmap <C-]><C-]>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]><C-]>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]><C-]>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]><C-]>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]><C-]>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-]><C-]>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-]><C-]>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-]><C-]>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+endif
+" }}}
 
 " NERDTree {{{
 "map <leader>q :VimFilerExplore<CR>
