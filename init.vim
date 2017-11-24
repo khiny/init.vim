@@ -52,6 +52,7 @@ inoremap jk <esc>
 noremap ; :
 "nmap <leader>v :edit $MYVIMRC<CR>
 map <leader>z [{V]}zf
+set nowrap
 nnoremap <silent> <leader>w :set wrap! wrap?<CR>
 
 inoremap <Up>       <C-O>gk
@@ -173,32 +174,40 @@ map <silent> [Tag]p :tabprevious<CR>
 "}}}
 " Gtags {{{
 if filereadable("./GTAGS")
-    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+  " The following key mappings are derived from 'cscope_maps.vim'.
+  " (The 'd' command is not implemented in gtags-cscope.)
+  "
+  " normal command
+  :nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+  :nmap <C-\>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
+  ":nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
-    nmap <C-]>s :scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]>g :scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]>c :scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]>t :scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]>e :scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-]>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-]>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-Space>s :Gtags -s <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <C-Space>g :Gtags <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <C-Space>c :Gtags -r <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <C-Space>t :Gtags -gi
+  :nmap <C-Space>e :Gtags -ge <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <C-Space>f :Gtags -P <C-R>=expand("<cfile>")<CR><CR>:ccl<CR>
+  :nmap <C-Space>i :scs find i <C-R>=expand("<cfile>")<CR><CR><C-W><C-W>
+  :nmap <C-Space>d :Gtags -f %<CR><C-W><C-W>
 
-    nmap <C-]><C-]>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]><C-]>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]><C-]>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]><C-]>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]><C-]>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-]><C-]>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-]><C-]>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-]><C-]>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-Space><C-Space>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-Space><C-Space>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-Space><C-Space>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-Space><C-Space>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-Space><C-Space>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-Space><C-Space>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+  :nmap <C-Space><C-Space>i :vert scs find i <C-R>=expand("<cfile>")<CR><CR>
+  ":nmap <C-Space><C-Space>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+
+  :nmap <C-n> :cn<CR>
+  :nmap <C-p> :cp<CR>
+  :nmap <C-\><C-]> :GtagsCursor<CR>
 endif
 " }}}
 
