@@ -284,6 +284,12 @@ call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
+call denite#custom#map('insert','<Down>','<denite:move_to_next_line>','noremap')
+call denite#custom#map('insert','<Up>','<denite:move_to_previous_line>','noremap')
+call denite#custom#map('insert','<DEL>','<denite:do_action:delete>','noremap nowait')
+call denite#custom#map('normal','<Down>','<denite:move_to_next_line>','noremap')
+call denite#custom#map('normal','<Up>','<denite:move_to_previous_line>','noremap')
+call denite#custom#map('normal','<DEL>','<denite:do_action:delete>','noremap nowait')
 "nnoremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/mm-3a-core file_rec:vendor/qcom/proprietary/mm-camerasdk file_rec:vendor/qcom/proprietary/mm-camera/mm-camera2 file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
 nnoremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/camx file_rec:vendor/qcom/proprietary/camx-lib file_rec:vendor/qcom/proprietary/chi-cdk file_rec:vendor/qcom/proprietary/camx-lib-stats -highlight-mode-insert=IncSearch<CR>
 nnoremap <leader>bb :<C-u>Denite buffer -highlight-mode-insert=IncSearch<CR>
