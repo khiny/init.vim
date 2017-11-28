@@ -47,6 +47,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'andymass/matchup.vim'
 Plug 'chrisbra/Recover.vim'
 Plug 'chrisbra/vim-diff-enhanced'
+Plug 'will133/vim-dirdiff'
 call plug#end()
 "}}}
 
