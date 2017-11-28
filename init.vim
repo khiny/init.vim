@@ -21,6 +21,8 @@ if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-clang', { 'for': 'cpp' }
   Plug 'zchee/libclang-python3'
+    "Plug 'roxma/nvim-completion-manager'
+    "Plug 'roxma/ncm-clang'
 "  Plug 'tweekmonster/deoplete-clang2'
   Plug 'Shougo/neoinclude.vim'
 else
@@ -43,6 +45,8 @@ Plug 'hecal3/vim-leader-guide'
 Plug 'Yggdroot/indentLine'
 "Plug 'andymass/vim-matchup'
 Plug 'andymass/matchup.vim'
+Plug 'chrisbra/Recover.vim'
+Plug 'chrisbra/vim-diff-enhanced'
 call plug#end()
 "}}}
 
@@ -359,4 +363,10 @@ let g:gen_tags#use_cache_dir=0
 let g:gen_tags#gtags_auto_gen=1
 let g:gen_tags#blacklist = ['$HOME']
 "let g:gen_tags#verbose=1
+" }}}
+" EnhancedDiff {{{
+" started In Diff-Mode set diffexpr (plugin not loaded yet)
+if &diff
+    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+endif
 " }}}
