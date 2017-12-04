@@ -31,6 +31,7 @@ else
 "  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'Lokaltog/vim-easymotion'
+"Plug 'yangmillstheory/vim-snipe'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
@@ -226,13 +227,34 @@ map <leader>q :NERDTreeToggle<CR>
 "map <leader>q :VimFilerExplore<CR>:VimFilerPrompt<CR>
 " }}}
 " vim-easymotion {{{
+if 1
 let g:EasyMotion_smartcase = 1
-map <SPACE> <Plug>(easymotion-s2)
+"map <SPACE> <Plug>(easymotion-s2)
+map <SPACE> <Plug>(easymotion-overwin-f2)
 "n-character search motion
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
+endif
+" }}}
+" vim-snipe {{{
+if 0
+" Character motions
+map <leader><leader>F <Plug>(snipe-F)
+map <leader><leader>f <Plug>(snipe-f)
+map <leader><leader>T <Plug>(snipe-T)
+map <leader><leader>t <Plug>(snipe-t)
+" Word motions
+map <leader><leader>w <Plug>(snipe-w)
+map <leader><leader>W <Plug>(snipe-W)
+map <leader><leader>e <Plug>(snipe-e)
+map <leader><leader>E <Plug>(snipe-E)
+map <leader><leader>b <Plug>(snipe-b)
+map <leader><leader>B <Plug>(snipe-B)
+map <leader><leader>ge <Plug>(snipe-ge)
+map <leader><leader>gE <Plug>(snipe-gE)
+endif
 " }}}
 " gitgutter {{{
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -348,6 +370,12 @@ let g:deoplete#enable_at_startup = 1
 " }}}
 " indentLine {{{
 let g:indentLine_fileType = ['c', 'cpp', 'h']
+let g:indentLine_char = '┊'
+if &diff
+    au Bufenter * :IndentLinesDisable
+else
+    au Bufenter * :IndentLinesEnable
+endif
 " }}}
 " fzf {{{
 "nnoremap <leader>bb :<C-u>Buffers<CR>
@@ -370,4 +398,7 @@ let g:gen_tags#blacklist = ['$HOME']
 if &diff
     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
 endif
+" }}}
+" dirdiff {{{
+let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp,*.git*"
 " }}}
