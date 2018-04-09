@@ -49,6 +49,7 @@ Plug 'chrisbra/Recover.vim'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'will133/vim-dirdiff'
 Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'junegunn/gv.vim'
 call plug#end()
 "}}}
 
