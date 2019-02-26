@@ -1,35 +1,28 @@
+" home setting {{{
+if has('win32') "if $HOME == 'U:\'
+    let $HOME = 'C:\0-work\0-bin\Neovim\a-hoilkHome'
+endif
+"}}}
+
 " plug {{{
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'drewtempelmeyer/palenight.vim'
-"Plug 'https://github.com/chazy/cscope_maps.git'
-"Plug 'Shougo/vimfiler.vim'
-"Plug 'romgrk/vimfiler-prompt'
+Plug 'rakr/vim-one'
+Plug 'joshdick/onedark.vim/'
+Plug 'bluz71/vim-moonfly-colors'
+Plug 'bluz71/vim-moonfly-statusline'
 Plug 'inkarkat/vim-mark'
 Plug 'inkarkat/vim-ingo-library'
-"Plug 'yuttie/comfortable-motion.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 Plug 'Shougo/echodoc.vim'
-"Plug 'Shougo/unite.vim'
-"Plug 'Shougo/unite-outline'
-"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/denite.nvim'
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'zchee/deoplete-clang', { 'for': 'cpp' }
-  Plug 'zchee/libclang-python3'
-    "Plug 'roxma/nvim-completion-manager'
-    "Plug 'roxma/ncm-clang'
-"  Plug 'tweekmonster/deoplete-clang2'
-  Plug 'Shougo/neoinclude.vim'
-else
-"  Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Lokaltog/vim-easymotion'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -48,8 +41,15 @@ Plug 'andymass/matchup.vim'
 Plug 'chrisbra/Recover.vim'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'will133/vim-dirdiff'
+if has('win32')
+"Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'powershell -executionpolicy bypass -File install.ps1' }
+else
+"Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+endif
+Plug 'rking/ag.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'junegunn/gv.vim'
+Plug 'TaDaa/vimade'
 call plug#end()
 "}}}
 
@@ -60,7 +60,7 @@ noremap ; :
 "nmap <leader>v :edit $MYVIMRC<CR>
 map <leader>z [{V]}zf
 set nowrap
-nnoremap <silent> <leader>w :set wrap! wrap?<CR>
+nnoremap <silent> <leader>p :set wrap! wrap?<CR>
 
 inoremap <Up>       <C-O>gk
 inoremap <Down>     <C-O>gj
@@ -70,6 +70,7 @@ snoremap <S-Up>     <C-O>gk
 snoremap <S-Down>   <C-O>gj
 
 set number              " show line numbers
+autocmd BufEnter * if &diff | set nonu | else | set nu | endif
 "set rnu
 set showmatch           " highlight matching [{()}]
 set ignorecase
@@ -79,6 +80,9 @@ au Bufenter *.c set softtabstop=2
 au Bufenter *.cpp set tabstop=4
 au Bufenter *.cpp set shiftwidth=4
 au Bufenter *.cpp set softtabstop=4
+au Bufenter *.h set tabstop=2
+au Bufenter *.h set shiftwidth=2
+au Bufenter *.h set softtabstop=2
 set autoindent
 set cindent
 set smartindent
@@ -96,7 +100,11 @@ set backspace=indent,eol,start
 if filereadable("./cscope.out")
   cs add ./cscope.out
 elseif filereadable("./GTAGS")
-  set csprg=gtags-cscope
+  if has('win32')
+    set csprg='$HOME\.local\share\glo663wb\bin\gtags-cscope.exe'
+  else
+    set csprg=gtags-cscope
+  endif
   cs add ./GTAGS
 endif
 
@@ -107,17 +115,21 @@ set modelines=1
 "packadd vimball
 set rtp+=~/.fzf
 
-set background=dark
-"set background=light
-"colorscheme PaperColor
-colorscheme palenight
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 if (has("termguicolors"))
   set termguicolors
 endif
+"set background=dark
+set background=light
+colorscheme PaperColor
+"colorscheme moonfly
+"colorscheme palenight
 
-au GUIEnter * simalt ~x
-set clipboard=unnamed
+"au GUIEnter * simalt ~x
+"inoremap <A-Up> call GuiWindowFullScreen(1)
+"inoremap <A-Down> call GuiWindowFullScreen(0)
+set clipboard+=unnamedplus
+inoremap <silent>  <S-Insert>  <C-R>+
 set laststatus=2
 set viminfo+=!
 set list listchars=tab:»\ ,trail:·
@@ -131,6 +143,61 @@ set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr
 
 set mouse=a
 set noshowmode
+"set spr
+set updatetime=100
+
+if has('win32')
+  let g:python3_host_prog = 'c:\Program Files\Python37\python'  " Python 3
+  let g:python_host_prog = 'c:\Python27\python'  " Python 2
+endif
+"}}}
+" LSP COC {{{
+autocmd FileType json syntax match Comment +\/\/.\+$+
+set cmdheight=2
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"}}}
+" AdjustWindowHeight {{{
+" https://gist.github.com/juanpabloaj/5845848
+"au FileType qf call AdjustWindowHeight(3,40)
+function! AdjustWindowHeight(minheight, maxheight)
+  let l = 1
+  let n_lines = 0
+  let w_width = winwidth(0)
+  while l <= line('$')
+    " number to float for division
+    let l_len = strlen(getline(l)) + 0.0
+    let n_lines += float2nr(ceil(line_width))
+    let l += 1
+  endw
+  exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+"}}}
+" AdjustFontSize {{{
+" https://stackoverflow.com/questions/35285300/how-to-change-neovim-font/51424640#51424640
+let s:fontsize = 12
+function! AdjustFontSize(amount)
+  let s:fontsize = s:fontsize+a:amount
+  ":execute "GuiFont! Consolas:h" . s:fontsize
+  :execute "GuiFont! NanumGothicCoding:h" . s:fontsize
+endfunction
+noremap <C-ScrollWheelUp> :call AdjustFontSize(1)<CR>
+noremap <C-ScrollWheelDown> :call AdjustFontSize(-1)<CR>
+inoremap <C-ScrollWheelUp> <Esc>:call AdjustFontSize(1)<CR>a
+inoremap <C-ScrollWheelDown> <Esc>:call AdjustFontSize(-1)<CR>a
 "}}}
 " tab {{{
 "" http://qiita.com/wadako111/items/755e753677dd72d8036d
@@ -179,8 +246,16 @@ map <silent> [Tag]n :tabnext<CR>
 map <silent> [Tag]p :tabprevious<CR>
 " tp ???Ϋ???
 "}}}
-" Gtags {{{
-if filereadable("./GTAGS")
+" Gtags cscope {{{
+if filereadable("./cscope.out")
+  :nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+  :nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+  :nmap <C-\>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
+elseif filereadable("./GTAGS")
   " The following key mappings are derived from 'cscope_maps.vim'.
   " (The 'd' command is not implemented in gtags-cscope.)
   "
@@ -223,14 +298,15 @@ endif
 map <leader>q :NERDTreeToggle<CR>
 "let g:NERDTreeDirArrowExpandable = ''
 "let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
+let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 " }}}
 " vimfiler {{{
 "map <leader>q :VimFilerExplore<CR>:VimFilerPrompt<CR>
 " }}}
 " vim-easymotion {{{
 let g:EasyMotion_smartcase = 1
-"map <SPACE> <Plug>(easymotion-s2)
-map <SPACE> <Plug>(easymotion-overwin-f2)
+map <SPACE> <Plug>(easymotion-s2)
 "n-character search motion
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
@@ -265,7 +341,7 @@ let g:airline_right_sep=''
 " }}}
 " mark {{{
 let g:mwDefaultHighlightingPalette = 'maximum'
-"au Bufenter * :MarkLoad
+let g:mwAutoLoadMarks = 1
 " }}}
 " unite {{{
 "nnoremap <silent> <leader>bf :<C-u>Unite file file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
@@ -283,15 +359,15 @@ let g:mwDefaultHighlightingPalette = 'maximum'
 " }}}
 " denite {{{
 call denite#custom#var('file_rec', 'command',
-  \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts',
-  \ ['-i', '--vimgrep'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
+\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+"
+"call denite#custom#var('grep', 'command', ['ag'])
+"call denite#custom#var('grep', 'default_opts',
+" \ ['-i', '--vimgrep'])
+"call denite#custom#var('grep', 'recursive_opts', [])
+"call denite#custom#var('grep', 'pattern_opt', [])
+"call denite#custom#var('grep', 'separator', ['--'])
+"call denite#custom#var('grep', 'final_opts', [])
 call denite#custom#map('insert','<Down>','<denite:move_to_next_line>','noremap')
 call denite#custom#map('insert','<Up>','<denite:move_to_previous_line>','noremap')
 call denite#custom#map('insert','<DEL>','<denite:do_action:delete>','noremap nowait')
@@ -299,10 +375,10 @@ call denite#custom#map('normal','<Down>','<denite:move_to_next_line>','noremap')
 call denite#custom#map('normal','<Up>','<denite:move_to_previous_line>','noremap')
 call denite#custom#map('normal','<DEL>','<denite:do_action:delete>','noremap nowait')
 "nnoremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/mm-3a-core file_rec:vendor/qcom/proprietary/mm-camerasdk file_rec:vendor/qcom/proprietary/mm-camera/mm-camera2 file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
-nnoremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/camx file_rec:vendor/qcom/proprietary/camx-lib file_rec:vendor/qcom/proprietary/chi-cdk file_rec:vendor/qcom/proprietary/camx-lib-stats -highlight-mode-insert=IncSearch<CR>
-nnoremap <leader>bb :<C-u>Denite buffer -highlight-mode-insert=IncSearch<CR>
-nnoremap <leader>bo :<C-u>Denite outline -highlight-mode-insert=IncSearch<CR>
-nnoremap <leader>b<Space> :Denite grep<CR>
+"noremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/camx file_rec:vendor/qcom/proprietary/camx-lib file_rec:vendor/qcom/proprietary/chi-cdk file_rec:vendor/qcom/proprietary/camx-lib-stats -highlight-mode-insert=IncSearch<CR>
+noremap <leader>bb :<C-u>Denite buffer -highlight-mode-insert=IncSearch<CR>
+noremap <leader>bo :<C-u>Denite outline -highlight-mode-insert=IncSearch<CR>
+"noremap <leader>b<Space> :Denite grep<CR>
 " }}}
 " vim-leader-guide {{{
 " Define prefix dictionary
@@ -344,22 +420,61 @@ nnoremap <silent> <leader> :<c-u>LeaderGuide ','<CR>
 vnoremap <silent> <leader> :<c-u>LeaderGuideVisual ','<CR>
 " }}}
 " deoplete {{{
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.4/lib/libclang.so.1'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.4/lib/clang'
+if has('win32')
+let g:deoplete#sources#clang#libclang_path = 'C:\Program Files\LLVM\bin\libclang.dll'
+let g:deoplete#sources#clang#clang_header = 'C:\Program Files\LLVM\lib\clang'
+else
+"let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libLLVM.so'
+"let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+endif
 let g:deoplete#sources#clang#std#cpp = 'c++14'
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#clang#sort_algo = 'priority'
+
+if !exists('g:deoplete#sources')
+  let g:deoplete#sources = {}
+endif
+let g:deoplete#sources.cpp = ['clang']
+
+"call deoplete#custom#var('clangx', 'clang_binary', 'c:\Program Files\LLVM\bin\clang.exe')
+"call deoplete#custom#var('clangx', 'default_c_options', '')
+"call deoplete#custom#var('clangx', 'default_cpp_options', '')
 " }}}
 " indentLine {{{
 let g:indentLine_fileType = ['c', 'cpp', 'h']
 let g:indentLine_char = '┊'
-if &diff
-    au Bufenter * :IndentLinesDisable
-else
-    au Bufenter * :IndentLinesEnable
-endif
+"if &diff
+    "autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter * let g:indentLine_enabled=0
+    "let g:indentLine_enabled=0
+    "IndentLinesDisable
+    "let g:indentLine_newVersion = 1
+    "au bufenter * let g:indentLine_enabled = 0
+"endif
+"autocmd BufEnter * if &diff | IndentLinesDisable | else | IndentLinesEnable | endif
 " }}}
 " fzf {{{
 "nnoremap <leader>bb :<C-u>Buffers<CR>
+nnoremap <leader>bf :<C-u>Files<CR>
+nnoremap <leader>bl :<C-u>BLines<CR>
+nnoremap <leader>bt :<C-u>BTags<CR>
+nnoremap <leader>bc :<C-u>BCommits<CR>
+let $FZF_DEFAULT_COMMAND = 'fd --type f'
+let g:fzf_action = {
+    \ 'ctrl-q': 'wall | bdelete',
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+command! FZFMulti call fzf#run(fzf#wrap({
+            \'source': 'ag -l',
+            \'options': ['--multi'],
+            \}))
+
+if has('win32')
+else
+let g:fzf_commits_log_options = '--graph --color=always
+  \ --format="%C(yellow)%h%C(red)%d%C(reset)
+  \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
+endif
 " }}}
 " palenight {{{
 let g:palenight_terminal_italics=1
@@ -382,9 +497,38 @@ endif
 " }}}
 " dirdiff {{{
 let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp,*.git*"
-" octol/vim-cpp-enhanced-highlight {{{
+" }}}
+" autozimu/LanguageClient-neovim {{{
+set hidden
+let g:LanguageClient_autoStart = 1  
+"let g:LanguageClient_settingsPath = '/home/joao/.config/nvim/settings.json'
+"let g:LanguageClient_loadSettings = 1
+set completefunc=LanguageClient#complete
+set formatexpr=LanguageClient_textDocument_rangeFormatting()
+
+let g:LanguageClient_serverCommands = {
+\ 'cpp': ['cquery', '--language-server'],
+\ }
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+"nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" }}}
+" wiki.vim {{{
+let g:wiki_root = '~/documents/wiki'
+" }}}
+" ack.vim {{{
+if executable('ag')
+  let g:ackpg = 'ag --vimgrep'
+endif
+" }}}
+" octol/vim-cpp-enhanced-highlight{{{
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
+let g:cpp_experimental_simple_template_highlight = 1
 let g:cpp_experimental_template_highlight = 1
-" }}}
+let g:cpp_concepts_highlight = 1
+"}}}
