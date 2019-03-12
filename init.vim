@@ -50,6 +50,7 @@ endif
 Plug 'rking/ag.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'TaDaa/vimade'
+Plug 'junegunn/GV.vim'
 call plug#end()
 "}}}
 
