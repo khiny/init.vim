@@ -105,7 +105,7 @@ elseif filereadable("./GTAGS")
   else
     set csprg=gtags-cscope
   endif
-  cs add ./GTAGS
+  silent cs add ./GTAGS
 endif
 
 set foldmethod=marker
