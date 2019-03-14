@@ -307,7 +307,8 @@ let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 " }}}
 " vim-easymotion {{{
 let g:EasyMotion_smartcase = 1
-map <SPACE> <Plug>(easymotion-s2)
+"map <SPACE> <Plug>(easymotion-s2)
+map <SPACE> <Plug>(easymotion-overwin-f2)
 "n-character search motion
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
@@ -455,7 +456,8 @@ let g:indentLine_char = '┊'
 " }}}
 " fzf {{{
 "nnoremap <leader>bb :<C-u>Buffers<CR>
-nnoremap <leader>bf :<C-u>Files<CR>
+"nnoremap <leader>bf :<C-u>Files<CR>
+nnoremap <leader>bf :<C-u>FZFMulti<CR>
 nnoremap <leader>bl :<C-u>BLines<CR>
 nnoremap <leader>bt :<C-u>BTags<CR>
 nnoremap <leader>bc :<C-u>BCommits<CR>
