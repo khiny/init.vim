@@ -45,11 +45,11 @@ if has('win32')
 "Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'powershell -executionpolicy bypass -File install.ps1' }
 else
 "Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 endif
 Plug 'rking/ag.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'TaDaa/vimade'
+"Plug 'TaDaa/vimade'
 Plug 'junegunn/GV.vim'
 call plug#end()
 "}}}
@@ -270,22 +270,22 @@ elseif filereadable("./GTAGS")
   :nmap <C-\>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
   ":nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
-  :nmap <C-Space>s :Gtags -s <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
-  :nmap <C-Space>g :Gtags <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
-  :nmap <C-Space>c :Gtags -r <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
-  :nmap <C-Space>t :Gtags -gi
-  :nmap <C-Space>e :Gtags -ge <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
-  :nmap <C-Space>f :Gtags -P <C-R>=expand("<cfile>")<CR><CR>:ccl<CR>
-  :nmap <C-Space>i :scs find i <C-R>=expand("<cfile>")<CR><CR><C-W><C-W>
-  :nmap <C-Space>d :Gtags -f %<CR><C-W><C-W>
+  :nmap <leader><leader>s :Gtags -s <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <leader><leader>g :Gtags <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <leader><leader>c :Gtags -r <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <leader><leader>t :Gtags -gi
+  :nmap <leader><leader>e :Gtags -ge <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <leader><leader>f :Gtags -P <C-R>=expand("<cfile>")<CR><CR>:ccl<CR>
+  :nmap <leader><leader>i :scs find i <C-R>=expand("<cfile>")<CR><CR><C-W><C-W>
+  :nmap <leader><leader>d :Gtags -f %<CR><C-W><C-W>
 
-  :nmap <C-Space><C-Space>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-  :nmap <C-Space><C-Space>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-  :nmap <C-Space><C-Space>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-  :nmap <C-Space><C-Space>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-  :nmap <C-Space><C-Space>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-  :nmap <C-Space><C-Space>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-  :nmap <C-Space><C-Space>i :vert scs find i <C-R>=expand("<cfile>")<CR><CR>
+  :nmap <leader><Space>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+  :nmap <leader><Space>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+  :nmap <leader><Space>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+  :nmap <leader><Space>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+  :nmap <leader><Space>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+  :nmap <leader><Space>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+  :nmap <leader><Space>i :vert scs find i <C-R>=expand("<cfile>")<CR><CR>
   ":nmap <C-Space><C-Space>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
   :nmap <C-n> :cn<CR>
@@ -445,6 +445,7 @@ let g:deoplete#sources.cpp = ['clang']
 " indentLine {{{
 let g:indentLine_fileType = ['c', 'cpp', 'h']
 let g:indentLine_char = '┊'
+let g:indentLine_enabled=0
 "if &diff
     "autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter * let g:indentLine_enabled=0
     "let g:indentLine_enabled=0
