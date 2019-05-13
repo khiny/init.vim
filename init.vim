@@ -16,6 +16,9 @@ Plug 'bluz71/vim-moonfly-colors'
 Plug 'bluz71/vim-moonfly-statusline'
 Plug 'inkarkat/vim-mark'
 Plug 'inkarkat/vim-ingo-library'
+"Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+"plug 'kristijanhusak/defx-icons'
+"Plug 'kristijanhusak/defx-git
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -33,7 +36,7 @@ Plug 'dhruvasagar/vim-prosession'
 "Plug 'jsfaint/gen_tags.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ConradIrwin/vim-bracketed-paste'
-Plug 'majutsushi/tagbar'
+"Plug 'majutsushi/tagbar'
 Plug 'hecal3/vim-leader-guide'
 Plug 'Yggdroot/indentLine'
 "Plug 'andymass/vim-matchup'
@@ -46,13 +49,16 @@ if has('win32')
 else
 "Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 "Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
 Plug 'liuchengxu/vista.vim'
 endif
 Plug 'rking/ag.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'TaDaa/vimade'
 Plug 'junegunn/GV.vim'
+Plug 'itchyny/calendar.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+"Plug 'yuttie/comfortable-motion.vim'
 call plug#end()
 "}}}
 
@@ -97,6 +103,7 @@ set fenc=utf-8
 "set encoding=utf-8
 set cursorline          " highlight current line
 ""set wildmenu            " visual autocomplete for command menu
+set wildoptions=pum
 set nohlsearch
 set backspace=indent,eol,start
 
@@ -148,37 +155,12 @@ set mouse=a
 set noshowmode
 "set spr
 set updatetime=100
+autocmd FileType qf 30wincmd_
 
 if has('win32')
   let g:python3_host_prog = 'c:\Program Files\Python37\python'  " Python 3
   let g:python_host_prog = 'c:\Python27\python'  " Python 2
 endif
-"}}}
-" LSP COC {{{
-autocmd FileType json syntax match Comment +\/\/.\+$+
-set cmdheight=2
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" if you want to disable auto detect, comment out those two lines
-"let g:airline#extensions#disable_rtp_load = 1
-"let g:airline_extensions = ['branch', 'hunks', 'coc']
-"
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 "}}}
 " AdjustWindowHeight {{{
 " https://gist.github.com/juanpabloaj/5845848
@@ -282,7 +264,7 @@ elseif filereadable("./GTAGS")
   :nmap <leader><leader>s :Gtags -s <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
   :nmap <leader><leader>g :Gtags <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
   :nmap <leader><leader>c :Gtags -r <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
-  :nmap <leader><leader>t :Gtags -gi
+  :nmap <leader><leader>t :Gtags -gi<space>
   :nmap <leader><leader>e :Gtags -ge <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
   :nmap <leader><leader>f :Gtags -P <C-R>=expand("<cfile>")<CR><CR>:ccl<CR>
   :nmap <leader><leader>i :scs find i <C-R>=expand("<cfile>")<CR><CR><C-W><C-W>
@@ -337,7 +319,7 @@ autocmd FileType gitcommit nmap <buffer> U :Git checkout -- <C-r><C-g><CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 " }}}
 " Tagbar {{{
-nnoremap <leader>t :TagbarToggle<CR>
+"nnoremap <leader>t :TagbarToggle<CR>
 " }}}
 " airline {{{
 "let g:airline_powerline_fonts = 1
@@ -562,4 +544,17 @@ let g:vista_blink = [2, 100]
 " The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
 " For example:
 let g:vista_fzf_preview = ['right:50%']
+
+nnoremap <leader>t :Vista finder ctags<CR>
 "}}}
+" itchyny/calendar.vim {{{
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+" }}}
+" Plug 'iamcco/markdown-preview.nvim' {{{
+let g:mkdp_auto_start = 1
+" }}}
+" Plug 'yuttie/comfortable-motion.vim' {{{
+let g:comfortable_motion_scroll_down_key = "j"
+let g:comfortable_motion_scroll_up_key = "k"
+" }}}
