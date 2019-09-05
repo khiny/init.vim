@@ -9,11 +9,11 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'rakr/vim-one'
-Plug 'joshdick/onedark.vim/'
-Plug 'bluz71/vim-moonfly-colors'
-Plug 'bluz71/vim-moonfly-statusline'
+"Plug 'drewtempelmeyer/palenight.vim'
+"Plug 'rakr/vim-one'
+"Plug 'joshdick/onedark.vim/'
+"Plug 'bluz71/vim-moonfly-colors'
+"Plug 'bluz71/vim-moonfly-statusline'
 Plug 'inkarkat/vim-mark'
 Plug 'inkarkat/vim-ingo-library'
 "Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -27,8 +27,9 @@ Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/denite.nvim'
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Lokaltog/vim-easymotion'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug('rbong/vim-crystalline')
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
@@ -44,20 +45,20 @@ Plug 'andymass/matchup.vim'
 Plug 'chrisbra/Recover.vim'
 Plug 'chrisbra/vim-diff-enhanced'
 Plug 'will133/vim-dirdiff'
-if has('win32')
-"Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'powershell -executionpolicy bypass -File install.ps1' }
-else
-"Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install --frozen-lockfile'}
+" Install nightly build, replace ./install.sh with install.cmd on windows
+Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
+" Or install latest release tag
+"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+" Or build from source code
+"Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 Plug 'liuchengxu/vista.vim'
-endif
 Plug 'rking/ag.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'TaDaa/vimade'
 Plug 'junegunn/GV.vim'
 Plug 'itchyny/calendar.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'uguu-org/vim-matrix-screensaver'
 "Plug 'yuttie/comfortable-motion.vim'
 call plug#end()
 "}}}
@@ -156,10 +157,15 @@ set noshowmode
 "set spr
 set updatetime=100
 autocmd FileType qf 30wincmd_
+autocmd FileType json syntax match Comment +\/\/.\+$+
+set hidden  "for coc.nvim
 
 if has('win32')
   let g:python3_host_prog = 'c:\Program Files\Python37\python'  " Python 3
   let g:python_host_prog = 'c:\Python27\python'  " Python 2
+else
+  let g:python3_host_prog = '/home/linuxbrew/.linuxbrew/bin/python3'  " Python 3
+  let g:python_host_prog = '/home/linuxbrew/.linuxbrew/bin/python2'  " Python 2
 endif
 "}}}
 " AdjustWindowHeight {{{
@@ -323,14 +329,25 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " }}}
 " airline {{{
 "let g:airline_powerline_fonts = 1
-"let g:airline_theme = 'papercolor'
-let g:airline_theme = 'onedark'
+let g:airline_theme = 'papercolor'
+"let g:airline_theme = 'onedark'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 "if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 "endif
 "set rop=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
+" }}}
+" Plug('rbong/vim-crystalline') {{{
+function! StatusLine(current)
+  return (a:current ? crystalline#mode() . '%#Crystalline#' : '%#CrystallineInactive#')
+        \ . ' %f%h%w%m%r '
+        \ . (a:current ? '%#CrystallineFill# %{fugitive#head()} ' : '')
+        \ . '%=' . (a:current ? '%#Crystalline# %{&paste?"PASTE ":""}%{&spell?"SPELL ":""}' . crystalline#mode_color() : '')
+        \ . ' %{&ft}[%{&enc}][%{&ffs}] %l/%L %c%V %P '
+endfunction
+let g:crystalline_statusline_fn = 'StatusLine'
+let g:crystalline_theme = 'default'
 " }}}
 " mark {{{
 let g:mwDefaultHighlightingPalette = 'maximum'
@@ -351,27 +368,42 @@ let g:mwAutoLoadMarks = 1
 "let g:unite_source_grep_encoding = 'utf-8'
 " }}}
 " denite {{{
-call denite#custom#var('file_rec', 'command',
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
+
+autocmd FileType denite-filter call s:denite_filter_my_settings()
+function! s:denite_filter_my_settings() abort
+  imap <silent><buffer> <C-o> <Plug>(denite_filter_quit)
+endfunction
+
+" Change file/rec command.
+call denite#custom#var('file/rec', 'command',
 \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-"
-"call denite#custom#var('grep', 'command', ['ag'])
-"call denite#custom#var('grep', 'default_opts',
-" \ ['-i', '--vimgrep'])
-"call denite#custom#var('grep', 'recursive_opts', [])
-"call denite#custom#var('grep', 'pattern_opt', [])
-"call denite#custom#var('grep', 'separator', ['--'])
-"call denite#custom#var('grep', 'final_opts', [])
-call denite#custom#map('insert','<Down>','<denite:move_to_next_line>','noremap')
-call denite#custom#map('insert','<Up>','<denite:move_to_previous_line>','noremap')
-call denite#custom#map('insert','<DEL>','<denite:do_action:delete>','noremap nowait')
-call denite#custom#map('normal','<Down>','<denite:move_to_next_line>','noremap')
-call denite#custom#map('normal','<Up>','<denite:move_to_previous_line>','noremap')
-call denite#custom#map('normal','<DEL>','<denite:do_action:delete>','noremap nowait')
-"nnoremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/mm-3a-core file_rec:vendor/qcom/proprietary/mm-camerasdk file_rec:vendor/qcom/proprietary/mm-camera/mm-camera2 file_rec:vendor/qcom/proprietary/mm-camera-core file_rec:hardware/qcom/camera file_rec:kernel/drivers/media/platform/msm/camera_v2 file_rec:kernel/include/media<CR>
-"noremap <leader>bf :<C-u>Denite file_rec:vendor/qcom/proprietary/camx file_rec:vendor/qcom/proprietary/camx-lib file_rec:vendor/qcom/proprietary/chi-cdk file_rec:vendor/qcom/proprietary/camx-lib-stats -highlight-mode-insert=IncSearch<CR>
-noremap <leader>bb :<C-u>Denite buffer -highlight-mode-insert=IncSearch<CR>
-noremap <leader>bo :<C-u>Denite outline -highlight-mode-insert=IncSearch<CR>
-"noremap <leader>b<Space> :Denite grep<CR>
+
+" Ag command on grep source
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
+call denite#custom#var('grep', 'recursive_opts', [])
+call denite#custom#var('grep', 'pattern_opt', [])
+call denite#custom#var('grep', 'separator', ['--'])
+call denite#custom#var('grep', 'final_opts', [])
+
+noremap <leader>bb :<C-u>Denite buffer<CR>
+noremap <leader>bo :<C-u>Denite outline<CR>
 " }}}
 " vim-leader-guide {{{
 " Define prefix dictionary
@@ -494,24 +526,6 @@ endif
 " dirdiff {{{
 let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp,*.git*"
 " }}}
-" autozimu/LanguageClient-neovim {{{
-set hidden
-let g:LanguageClient_autoStart = 1  
-"let g:LanguageClient_settingsPath = '/home/joao/.config/nvim/settings.json'
-"let g:LanguageClient_loadSettings = 1
-set completefunc=LanguageClient#complete
-set formatexpr=LanguageClient_textDocument_rangeFormatting()
-
-let g:LanguageClient_serverCommands = {
-\ 'cpp': ['cquery', '--language-server'],
-\ }
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-"nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-" }}}
 " wiki.vim {{{
 let g:wiki_root = '~/documents/wiki'
 " }}}
@@ -545,7 +559,8 @@ let g:vista_blink = [2, 100]
 " For example:
 let g:vista_fzf_preview = ['right:50%']
 
-nnoremap <leader>t :Vista finder ctags<CR>
+"nnoremap <leader>t :Vista finder ctags<CR>
+nnoremap <leader>t :Vista finder coc<CR>
 "}}}
 " itchyny/calendar.vim {{{
 let g:calendar_google_calendar = 1
@@ -558,3 +573,47 @@ let g:mkdp_auto_start = 1
 let g:comfortable_motion_scroll_down_key = "j"
 let g:comfortable_motion_scroll_up_key = "k"
 " }}}
+" Plug 'neoclide/coc.nvim' {{{
+" https://kimpers.com/vim-intelligent-autocompletion/
+"let g:coc_global_extensions = [
+"  'coc-emoji', 'coc-eslint', 'coc-prettier',
+"  'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin',
+"  'coc-css', 'coc-json', 'coc-pyls', 'coc-yaml'
+"]
+
+" Better display for messages
+set cmdheight=2
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+
+" Use `lp` and `ln` for navigate diagnostics
+nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> <leader>ld <Plug>(coc-definition)
+nmap <silent> <leader>lt <Plug>(coc-type-definition)
+nmap <silent> <leader>li <Plug>(coc-implementation)
+nmap <silent> <leader>lf <Plug>(coc-references)
+
+" Remap for rename current word
+nmap <leader>lr <Plug>(coc-rename)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+"}}}
