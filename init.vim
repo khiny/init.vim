@@ -9,6 +9,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'arzg/vim-substrata'
 "Plug 'drewtempelmeyer/palenight.vim'
 "Plug 'rakr/vim-one'
 "Plug 'joshdick/onedark.vim/'
@@ -16,6 +17,8 @@ Plug 'NLKNguyen/papercolor-theme'
 "Plug 'bluz71/vim-moonfly-statusline'
 Plug 'inkarkat/vim-mark'
 Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-MarkMarkup'
+Plug 'inkarkat/vim-PatternsOnText'
 "Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 "plug 'kristijanhusak/defx-icons'
 "Plug 'kristijanhusak/defx-git
@@ -25,11 +28,15 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Shougo/echodoc.vim'
 Plug 'Shougo/denite.nvim'
-"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plug 'ozelentok/deoplete-gtags'
+Plug 'deoplete-plugins/deoplete-tag'
 Plug 'Lokaltog/vim-easymotion'
 "Plug 'vim-airline/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
-Plug('rbong/vim-crystalline')
+"Plug('rbong/vim-crystalline')
+Plug 'itchyny/lightline.vim'
+"Plug 'liuchengxu/eleline.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
@@ -38,33 +45,45 @@ Plug 'dhruvasagar/vim-prosession'
 Plug 'airblade/vim-gitgutter'
 Plug 'ConradIrwin/vim-bracketed-paste'
 "Plug 'majutsushi/tagbar'
-Plug 'hecal3/vim-leader-guide'
-Plug 'Yggdroot/indentLine'
+"Plug 'hecal3/vim-leader-guide'
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+"Plug 'Yggdroot/indentLine'
 "Plug 'andymass/vim-matchup'
 Plug 'andymass/matchup.vim'
 Plug 'chrisbra/Recover.vim'
 Plug 'chrisbra/vim-diff-enhanced'
-Plug 'will133/vim-dirdiff'
-" Install nightly build, replace ./install.sh with install.cmd on windows
-Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
-" Or install latest release tag
-"Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-" Or build from source code
+"Plug 'will133/vim-dirdiff'
+" Use release branch (Recommend)
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Or build from source code by use yarn: https://yarnpkg.com
 "Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+"Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'liuchengxu/vista.vim'
 Plug 'rking/ag.vim'
-Plug 'octol/vim-cpp-enhanced-highlight'
+"Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'TaDaa/vimade'
 Plug 'junegunn/GV.vim'
-Plug 'itchyny/calendar.vim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-Plug 'uguu-org/vim-matrix-screensaver'
+"Plug 'itchyny/calendar.vim'
+"Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+"Plug 'uguu-org/vim-matrix-screensaver'
+Plug 'liuchengxu/vim-clap'
 "Plug 'yuttie/comfortable-motion.vim'
+"Plug 'zefei/vim-wintabs'
+"Plug 'zefei/vim-wintabs-powerline'
+Plug 'mhinz/vim-startify'
+Plug 't9md/vim-choosewin'
+Plug 'weilbith/nerdtree_choosewin-plugin'
 call plug#end()
 "}}}
 
 " my setting {{{
-let mapleader = ","
+"let mapleader = ","
+
+let g:mapleader = ','
+let g:maplocalleader = "\<Space>"
+nnoremap <silent> <leader>      :<c-u>WhichKey ','<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey '<Space>'<CR>
+
 inoremap jk <esc>
 noremap ; :
 "nmap <leader>v :edit $MYVIMRC<CR>
@@ -72,8 +91,10 @@ map <leader>z [{V]}zf
 set nowrap
 nnoremap <silent> <leader>p :set wrap! wrap?<CR>
 
-inoremap <Up>       <C-O>gk
-inoremap <Down>     <C-O>gj
+"inoremap <Up>       <C-O>gk
+"inoremap <Down>     <C-O>gj
+noremap <Up>       gk
+noremap <Down>     gj
 inoremap <S-Up>     <C-O>vgk<C-G>
 inoremap <S-Down>   <C-O>vgj<C-G>
 snoremap <S-Up>     <C-O>gk
@@ -98,6 +119,7 @@ set cindent
 set smartindent
 au Bufenter *.\(c\|cpp\|h\) set et
 set nobackup
+set nowritebackup
 set fenc=utf-8
 "set fencs=utf-8,cp949,euc-kr
 "set fencs=utf-8
@@ -133,6 +155,7 @@ endif
 "set background=dark
 set background=light
 colorscheme PaperColor
+"colorscheme substrata
 "colorscheme moonfly
 "colorscheme palenight
 
@@ -150,12 +173,19 @@ augroup XML
   autocmd FileType xml setlocal foldmethod=indent foldlevelstart=999 foldminlines=0
 augroup END
 
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+"set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+set guicursor=i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+
+"set guifontwide=D2Coding:h12
+"set guifontwide=NanumGothicCoding:h16
+set noimd
+set helplang=ko
+set helpheight=99999
 
 set mouse=a
 set noshowmode
 "set spr
-set updatetime=100
+"set updatetime=100
 autocmd FileType qf 30wincmd_
 autocmd FileType json syntax match Comment +\/\/.\+$+
 set hidden  "for coc.nvim
@@ -198,7 +228,7 @@ inoremap <C-ScrollWheelUp> <Esc>:call AdjustFontSize(1)<CR>a
 inoremap <C-ScrollWheelDown> <Esc>:call AdjustFontSize(-1)<CR>a
 "}}}
 " tab {{{
-"" http://qiita.com/wadako111/items/755e753677dd72d8036d
+" http://qiita.com/wadako111/items/755e753677dd72d8036d
 " Anywhere SID.
 function! s:SID_PREFIX()
   return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
@@ -267,14 +297,23 @@ elseif filereadable("./GTAGS")
   :nmap <C-\>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
   ":nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
-  :nmap <leader><leader>s :Gtags -s <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
-  :nmap <leader><leader>g :Gtags <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
-  :nmap <leader><leader>c :Gtags -r <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+"  :nmap <leader><leader>s :Gtags -s <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+"  :nmap <leader><leader>g :Gtags <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+"  :nmap <leader><leader>c :Gtags -r <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+"  :nmap <leader><leader>t :Gtags -gi<space>
+"  :nmap <leader><leader>e :Gtags -ge <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+"  :nmap <leader><leader>f :Gtags -P <C-R>=expand("<cfile>")<CR><CR>:ccl<CR>
+"  :nmap <leader><leader>i :scs find i <C-R>=expand("<cfile>")<CR><CR><C-W><C-W>
+"  :nmap <leader><leader>d :Gtags -f %<CR><C-W><C-W>
+
+  :nmap <leader><leader>s :Gtags -s <C-R>=expand("<cword>")<CR><CR>
+  :nmap <leader><leader>g :Gtags <C-R>=expand("<cword>")<CR><CR>
+  :nmap <leader><leader>c :Gtags -r <C-R>=expand("<cword>")<CR><CR>
   :nmap <leader><leader>t :Gtags -gi<space>
-  :nmap <leader><leader>e :Gtags -ge <C-R>=expand("<cword>")<CR><CR><C-W><C-W>
+  :nmap <leader><leader>e :Gtags -ge <C-R>=expand("<cword>")<CR><CR>
   :nmap <leader><leader>f :Gtags -P <C-R>=expand("<cfile>")<CR><CR>:ccl<CR>
-  :nmap <leader><leader>i :scs find i <C-R>=expand("<cfile>")<CR><CR><C-W><C-W>
-  :nmap <leader><leader>d :Gtags -f %<CR><C-W><C-W>
+  :nmap <leader><leader>i :scs find i <C-R>=expand("<cfile>")<CR><CR>
+  :nmap <leader><leader>d :Gtags -f %<CR>
 
   :nmap <leader><Space>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
   :nmap <leader><Space>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
@@ -299,13 +338,13 @@ map <leader>q :NERDTreeToggle<CR>
 let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 " }}}
-" vimfiler {{{
+"" vimfiler {{{
 "map <leader>q :VimFilerExplore<CR>:VimFilerPrompt<CR>
-" }}}
+"" }}}
 " vim-easymotion {{{
 let g:EasyMotion_smartcase = 1
 "map <SPACE> <Plug>(easymotion-s2)
-map <SPACE> <Plug>(easymotion-overwin-f2)
+"map <SPACE> <Plug>(easymotion-overwin-f2)
 "n-character search motion
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
@@ -324,9 +363,9 @@ nnoremap <silent> <leader>gr :Gremove<CR>
 autocmd FileType gitcommit nmap <buffer> U :Git checkout -- <C-r><C-g><CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 " }}}
-" Tagbar {{{
+"" Tagbar {{{
 "nnoremap <leader>t :TagbarToggle<CR>
-" }}}
+"" }}}
 " airline {{{
 "let g:airline_powerline_fonts = 1
 let g:airline_theme = 'papercolor'
@@ -338,51 +377,54 @@ let g:airline_right_sep=''
 "endif
 "set rop=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
 " }}}
-" Plug('rbong/vim-crystalline') {{{
-function! StatusLine(current)
-  return (a:current ? crystalline#mode() . '%#Crystalline#' : '%#CrystallineInactive#')
-        \ . ' %f%h%w%m%r '
-        \ . (a:current ? '%#CrystallineFill# %{fugitive#head()} ' : '')
-        \ . '%=' . (a:current ? '%#Crystalline# %{&paste?"PASTE ":""}%{&spell?"SPELL ":""}' . crystalline#mode_color() : '')
-        \ . ' %{&ft}[%{&enc}][%{&ffs}] %l/%L %c%V %P '
-endfunction
-let g:crystalline_statusline_fn = 'StatusLine'
-let g:crystalline_theme = 'default'
-" }}}
+"" Plug('rbong/vim-crystalline') {{{
+"function! StatusLine(current)
+"  return (a:current ? crystalline#mode() . '%#Crystalline#' : '%#CrystallineInactive#')
+"        \ . ' %f%h%w%m%r '
+"        \ . (a:current ? '%#CrystallineFill# %{fugitive#head()} ' : '')
+"        \ . '%=' . (a:current ? '%#Crystalline# %{&paste?"PASTE ":""}%{&spell?"SPELL ":""}' . crystalline#mode_color() : '')
+"        \ . ' %{&ft}[%{&enc}][%{&ffs}] %l/%L %c%V %P '
+"endfunction
+"let g:crystalline_statusline_fn = 'StatusLine'
+"let g:crystalline_theme = 'default'
+"" }}}
 " mark {{{
 let g:mwDefaultHighlightingPalette = 'maximum'
 let g:mwAutoLoadMarks = 1
 " }}}
-" unite {{{
-"nnoremap <silent> <leader>bf :<C-u>Unite file file_rec/async:vendor/qcom/proprietary/camx/ file_rec/async:vendor/qcom/proprietary/camx-lib/ file_rec/async:vendor/qcom/proprietary/chi-cdk/<CR>
-"nnoremap <leader>f :<C-u>Unite file file_rec/async:vendor/qcom/proprietary/mm-3a-core/ file_rec/async:vendor/qcom/proprietary/mm-camerasdk/ file_rec/async:vendor/qcom/proprietary/mm-camera/mm-camera2/ file_rec/async:vendor/qcom/proprietary/mm-camera-core file_rec/async:hardware/qcom/camera file_rec/async:kernel/msm-3.18/drivers/media/platform/msm/camera_v2 file_rec/async:kernel/msm-3.18/include/media<CR>
-"nnoremap <silent> <leader>bb :<C-u>Unite buffer bookmark<CR>
-"nnoremap <silent> <leader>bo :<C-u>Unite outline<CR><C-w><S-_>
-"nnoremap <silent> <leader><Space> :Unite grep:.<CR>
-"let g:unite_source_rec_async_command = ['ack', '-f', '--nofilter']
-"let g:unite_source_rec_async_command = ['rg']
-"let g:unite_source_grep_command='rg'
-"let g:unite_source_grep_default_opts='-i --no-heading --no-color -k -H'
-"let g:unite_source_grep_default_opts='--nogroup --nocolor'
-"let g:unite_source_grep_recursive_opt=''
-"let g:unite_source_grep_encoding = 'utf-8'
-" }}}
 " denite {{{
+" INTERFACE
+call denite#custom#option('_', {
+  \ 'auto_resume': 1,
+  \ 'start_filter': 1,
+  \ 'statusline': 1,
+  \ 'smartcase': 1,
+  \ 'vertical_preview': 1,
+  \ 'direction': 'dynamicbottom',
+  \ 'prompt': '❯',
+  \ 'max_dynamic_update_candidates': 50000,
+  \ 'winwidth': &columns,
+  \ 'winheight': &lines / 3,
+  \ 'wincol': 0,
+  \ 'winrow': (&lines - 3) - (&lines / 3),
+  \ })
+
 " Define mappings
 autocmd FileType denite call s:denite_my_settings()
 function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-  \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q
-  \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
+  setlocal signcolumn=no cursorline
+
+  nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> dd   denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p    denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> st   denite#do_map('do_action', 'tabopen')
+  nnoremap <silent><buffer><expr> sg   denite#do_map('do_action', 'vsplit')
+  nnoremap <silent><buffer><expr> sv   denite#do_map('do_action', 'split')
+  nnoremap <silent><buffer><expr> q    denite#do_map('quit')
+  nnoremap <silent><buffer><expr> r    denite#do_map('redraw')
+  nnoremap <silent><buffer><expr> i    denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Esc>   denite#do_map('quit')
+  nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
 endfunction
 
 autocmd FileType denite-filter call s:denite_filter_my_settings()
@@ -391,95 +433,160 @@ function! s:denite_filter_my_settings() abort
 endfunction
 
 " Change file/rec command.
-call denite#custom#var('file/rec', 'command',
-\ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+if executable('ag')
+  call denite#custom#var('file/rec', 'command',
+  \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 
-" Ag command on grep source
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', [])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
+  " Ag command on grep source
+  call denite#custom#var('grep', 'command', ['ag'])
+  call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep'])
+  call denite#custom#var('grep', 'recursive_opts', [])
+  call denite#custom#var('grep', 'pattern_opt', [])
+  call denite#custom#var('grep', 'separator', ['--'])
+  call denite#custom#var('grep', 'final_opts', [])
+endif
 
-noremap <leader>bb :<C-u>Denite buffer<CR>
+"noremap <leader>bb :<C-u>Denite buffer<CR>
 noremap <leader>bo :<C-u>Denite outline<CR>
 " }}}
-" vim-leader-guide {{{
-" Define prefix dictionary
-let g:lmap =  {}
-
-" Second level dictionaries:
-" 'name' is a special field. It will define the name of the group.
-" leader-f is the "File Menu" group.
-" Unnamed groups will show a default string
-
-let g:lmap.f = { 'name' : 'File Menu' }
-  nmap <silent> <leader>fd :e $MYVIMRC<CR>
-  let g:lmap.f.d = ['e $MYVIMRC', 'Open vimrc']
-  nmap <silent> <leader>fs :so %<CR>
-  let g:lmap.f.s = ['so %', 'Source file']
-  nmap <silent> <leader>fw :w<CR>
-  let g:lmap.f.w = ['w', 'Write file']
-
-let g:lmap.o = { 'name' : 'Open Stuff' }
-  nmap <silent> <leader>oo  :copen<CR>
-  let g:lmap.o.o = ['copen', 'Open quickfix']
-  nmap <silent> <leader>ol  :lopen<CR>
-  let g:lmap.o.l = ['lopen', 'Open locationlist']
-
-" Create new menus not based on existing mappings:
-let g:lmap.g = { 'name' : 'Git Menu',
-                \'s' : ['Gstatus', 'Git Status'],
-                \'p' : ['Gpull',   'Git Pull'],
-                \'u' : ['Gpush',   'Git Push'],
-                \'c' : ['Gcommit', 'Git Commit'],
-                \'w' : ['Gwrite',  'Git Write'],
-                \}
-
-let g:lmap.b = { 'name' : 'unite' }
-let g:lmap.g = { 'name' : 'gitgutter' }
-
-call leaderGuide#register_prefix_descriptions(",", "g:lmap")
-nnoremap <silent> <leader> :<c-u>LeaderGuide ','<CR>
-vnoremap <silent> <leader> :<c-u>LeaderGuideVisual ','<CR>
+"" vim-leader-guide {{{
+"" Define prefix dictionary
+"let g:lmap =  {}
+"
+"" Second level dictionaries:
+"" 'name' is a special field. It will define the name of the group.
+"" leader-f is the "File Menu" group.
+"" Unnamed groups will show a default string
+"
+"let g:lmap.f = { 'name' : 'File Menu' }
+"  nmap <silent> <leader>fd :e $MYVIMRC<CR>
+"  let g:lmap.f.d = ['e $MYVIMRC', 'Open vimrc']
+"  nmap <silent> <leader>fs :so %<CR>
+"  let g:lmap.f.s = ['so %', 'Source file']
+"  nmap <silent> <leader>fw :w<CR>
+"  let g:lmap.f.w = ['w', 'Write file']
+"
+"let g:lmap.o = { 'name' : 'Open Stuff' }
+"  nmap <silent> <leader>oo  :copen<CR>
+"  let g:lmap.o.o = ['copen', 'Open quickfix']
+"  nmap <silent> <leader>ol  :lopen<CR>
+"  let g:lmap.o.l = ['lopen', 'Open locationlist']
+"
+"" Create new menus not based on existing mappings:
+"let g:lmap.g = { 'name' : 'Git Menu',
+"                \'s' : ['Gstatus', 'Git Status'],
+"                \'p' : ['Gpull',   'Git Pull'],
+"                \'u' : ['Gpush',   'Git Push'],
+"                \'c' : ['Gcommit', 'Git Commit'],
+"                \'w' : ['Gwrite',  'Git Write'],
+"                \}
+"
+"let g:lmap.b = { 'name' : 'unite' }
+"let g:lmap.g = { 'name' : 'gitgutter' }
+"
+"call leaderGuide#register_prefix_descriptions(",", "g:lmap")
+"nnoremap <silent> <leader> :<c-u>LeaderGuide ','<CR>
+"vnoremap <silent> <leader> :<c-u>LeaderGuideVisual ','<CR>
 " }}}
-" deoplete {{{
-if has('win32')
-let g:deoplete#sources#clang#libclang_path = 'C:\Program Files\LLVM\bin\libclang.dll'
-let g:deoplete#sources#clang#clang_header = 'C:\Program Files\LLVM\lib\clang'
-else
-"let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libLLVM.so'
-"let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang'
+" liuchengxu/vim-which-key {{{
+let g:which_key_map =  {}
+let g:which_key_map.f = { 'name' : '+file' }
+nnoremap <silent> <leader>fd :e $MYVIMRC<CR>
+let g:which_key_map.f.d = 'open-vimrc'
+
+nnoremap <silent> <leader>oq  :copen<CR>
+nnoremap <silent> <leader>ol  :lopen<CR>
+let g:which_key_map.o = {
+      \ 'name' : '+open',
+      \ 'q' : 'open-quickfix'    ,
+      \ 'l' : 'open-locationlist',
+      \ }
+" }}}
+"" indentLine {{{
+"let g:indentLine_fileType = ['c', 'cpp', 'h']
+"let g:indentLine_char = '┊'
+"let g:indentLine_enabled=0
+""if &diff
+"    "autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter * let g:indentLine_enabled=0
+"    "let g:indentLine_enabled=0
+"    "IndentLinesDisable
+"    "let g:indentLine_newVersion = 1
+"    "au bufenter * let g:indentLine_enabled = 0
+""endif
+""autocmd BufEnter * if &diff | IndentLinesDisable | else | IndentLinesEnable | endif
+"" }}}
+" fzf {{{         https://github.com/junegunn/dotfiles/blob/master/vimrc
+if has('nvim') || has('gui_running')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
 endif
-let g:deoplete#sources#clang#std#cpp = 'c++14'
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#sort_algo = 'priority'
 
-if !exists('g:deoplete#sources')
-  let g:deoplete#sources = {}
+
+" All files
+command! -nargs=? -complete=dir AF
+  \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+  \ })))
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Terminal buffer options for fzf
+autocmd! FileType fzf
+autocmd  FileType fzf set noshowmode noruler nonu
+
+if has('nvim')
+  function! s:create_float(hl, opts)
+    let buf = nvim_create_buf(v:false, v:true)
+    let opts = extend({'relative': 'editor', 'style': 'minimal'}, a:opts)
+    let win = nvim_open_win(buf, v:true, opts)
+    call setwinvar(win, '&winhighlight', 'NormalFloat:'.a:hl)
+    call setwinvar(win, '&colorcolumn', '')
+    return buf
+  endfunction
+
+  function! FloatingFZF()
+    " Size and position
+    let width = float2nr(&columns * 0.9)
+    let height = float2nr(&lines * 0.6)
+    let row = float2nr((&lines - height) / 2)
+    let col = float2nr((&columns - width) / 2)
+
+    " Border
+    let top = '╭' . repeat('─', width - 2) . '╮'
+    let mid = '│' . repeat(' ', width - 2) . '│'
+    let bot = '╰' . repeat('─', width - 2) . '╯'
+    let border = [top] + repeat([mid], height - 2) + [bot]
+
+    " Draw frame
+    let s:frame = s:create_float('Comment', {'row': row, 'col': col, 'width': width, 'height': height})
+    call nvim_buf_set_lines(s:frame, 0, -1, v:true, border)
+
+    " Draw viewport
+    call s:create_float('Normal', {'row': row + 1, 'col': col + 2, 'width': width - 4, 'height': height - 2})
+    autocmd BufWipeout <buffer> execute 'bwipeout' s:frame
+  endfunction
+
+  let g:fzf_layout = { 'window': 'call FloatingFZF()' }
 endif
-let g:deoplete#sources.cpp = ['clang']
 
-"call deoplete#custom#var('clangx', 'clang_binary', 'c:\Program Files\LLVM\bin\clang.exe')
-"call deoplete#custom#var('clangx', 'default_c_options', '')
-"call deoplete#custom#var('clangx', 'default_cpp_options', '')
-" }}}
-" indentLine {{{
-let g:indentLine_fileType = ['c', 'cpp', 'h']
-let g:indentLine_char = '┊'
-let g:indentLine_enabled=0
-"if &diff
-    "autocmd VimEnter,WinEnter,BufNewFile,BufRead,BufEnter,TabEnter * let g:indentLine_enabled=0
-    "let g:indentLine_enabled=0
-    "IndentLinesDisable
-    "let g:indentLine_newVersion = 1
-    "au bufenter * let g:indentLine_enabled = 0
-"endif
-"autocmd BufEnter * if &diff | IndentLinesDisable | else | IndentLinesEnable | endif
-" }}}
-" fzf {{{
-"nnoremap <leader>bb :<C-u>Buffers<CR>
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+
+
+nnoremap <leader>bb :<C-u>Buffers<CR>
 "nnoremap <leader>bf :<C-u>Files<CR>
 nnoremap <leader>bf :<C-u>FZFMulti<CR>
 nnoremap <leader>bg :<C-u>GFiles<CR>
@@ -504,52 +611,53 @@ let g:fzf_commits_log_options = '--graph --color=always
   \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
 endif
 " }}}
-" palenight {{{
-let g:palenight_terminal_italics=1
-hi MatchParen cterm=italic gui=italic
-" }}}
-" echodoc {{{
-let g:echodoc#enable_at_startup=1
-" }}}
-" gen_tags {{{
-let g:gen_tags#use_cache_dir=0
-let g:gen_tags#gtags_auto_gen=1
-let g:gen_tags#blacklist = ['$HOME']
-"let g:gen_tags#verbose=1
-" }}}
-" EnhancedDiff {{{
-" started In Diff-Mode set diffexpr (plugin not loaded yet)
-if &diff
-    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-endif
-" }}}
-" dirdiff {{{
-let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp,*.git*"
-" }}}
-" wiki.vim {{{
-let g:wiki_root = '~/documents/wiki'
-" }}}
+"" palenight {{{
+"let g:palenight_terminal_italics=1
+"hi MatchParen cterm=italic gui=italic
+"" }}}
+"" echodoc {{{
+"let g:echodoc#enable_at_startup=1
+"" }}}
+"" gen_tags {{{
+"let g:gen_tags#use_cache_dir=0
+"let g:gen_tags#gtags_auto_gen=1
+"let g:gen_tags#blacklist = ['$HOME']
+""let g:gen_tags#verbose=1
+"" }}}
+"" EnhancedDiff {{{
+"" started In Diff-Mode set diffexpr (plugin not loaded yet)
+"if &diff
+"    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+"endif
+"" }}}
+"" dirdiff {{{
+"let g:DirDiffExcludes = "CVS,*.class,*.exe,.*.swp,*.git*"
+"" }}}
+"" wiki.vim {{{
+"let g:wiki_root = '~/documents/wiki'
+"" }}}
 " ack.vim {{{
 if executable('ag')
   let g:ackpg = 'ag --vimgrep'
 endif
 " }}}
-" octol/vim-cpp-enhanced-highlight{{{
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_experimental_simple_template_highlight = 1
-let g:cpp_experimental_template_highlight = 1
-let g:cpp_concepts_highlight = 1
-"}}}
+"" octol/vim-cpp-enhanced-highlight{{{
+"let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
+"let g:cpp_class_decl_highlight = 1
+"let g:cpp_experimental_simple_template_highlight = 1
+"let g:cpp_experimental_template_highlight = 1
+"let g:cpp_concepts_highlight = 1
+""}}}
 "liuchengxu/vista.vim {{{
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 set statusline+=%{NearestMethodOrFunction()}
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 " Width of vista sidebar.
-let g:vista_sidebar_width = 40
+let g:vista_sidebar_width = 80
 " Time delay for showing detailed symbol info at current cursor.
 let g:vista_cursor_delay = 400
 " Blinking cursor 2 times with 100ms interval after jumping to the tag.
@@ -559,61 +667,89 @@ let g:vista_blink = [2, 100]
 " For example:
 let g:vista_fzf_preview = ['right:50%']
 
+"let g:vista_default_executive = 'ctags'
 "nnoremap <leader>t :Vista finder ctags<CR>
-nnoremap <leader>t :Vista finder coc<CR>
+"nnoremap <leader>t :Vista finder coc<CR>
+nnoremap <leader>t :Vista!!<CR>
 "}}}
-" itchyny/calendar.vim {{{
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
-" }}}
-" Plug 'iamcco/markdown-preview.nvim' {{{
-let g:mkdp_auto_start = 1
-" }}}
+"" itchyny/calendar.vim {{{
+"let g:calendar_google_calendar = 1
+"let g:calendar_google_task = 1
+"" }}}
+"" Plug 'iamcco/markdown-preview.nvim' {{{
+"let g:mkdp_auto_start = 1
+"" }}}
 " Plug 'yuttie/comfortable-motion.vim' {{{
 let g:comfortable_motion_scroll_down_key = "j"
 let g:comfortable_motion_scroll_up_key = "k"
 " }}}
-" Plug 'neoclide/coc.nvim' {{{
-" https://kimpers.com/vim-intelligent-autocompletion/
-"let g:coc_global_extensions = [
-"  'coc-emoji', 'coc-eslint', 'coc-prettier',
-"  'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin',
-"  'coc-css', 'coc-json', 'coc-pyls', 'coc-yaml'
-"]
-
-" Better display for messages
-set cmdheight=2
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
-
-" Use `lp` and `ln` for navigate diagnostics
-nmap <silent> <leader>lp <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>ln <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> <leader>ld <Plug>(coc-definition)
-nmap <silent> <leader>lt <Plug>(coc-type-definition)
-nmap <silent> <leader>li <Plug>(coc-implementation)
-nmap <silent> <leader>lf <Plug>(coc-references)
-
-" Remap for rename current word
-nmap <leader>lr <Plug>(coc-rename)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-"}}}
+"" Plug 'neoclide/coc.nvim' {{{
+"" https://kimpers.com/vim-intelligent-autocompletion/
+""let g:coc_global_extensions = [
+""  'coc-emoji', 'coc-eslint', 'coc-prettier',
+""  'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin',
+""  'coc-css', 'coc-json', 'coc-pyls', 'coc-yaml'
+""]
+"
+"" Better display for messages
+"set cmdheight=2
+"" Smaller updatetime for CursorHold & CursorHoldI
+"set updatetime=300
+"" don't give |ins-completion-menu| messages.
+"set shortmess+=c
+"" always show signcolumns
+"set signcolumn=yes
+"
+"" Use tab for trigger completion with characters ahead and navigate.
+"" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
+"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"
+"" Remap keys for gotos
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
+"
+"" Use K to show documentation in preview window
+"nnoremap <silent> K :call <SID>show_documentation()<CR>
+"
+"function! s:show_documentation()
+"  if (index(['vim','help'], &filetype) >= 0)
+"    execute 'h '.expand('<cword>')
+"  else
+"    call CocAction('doHover')
+"  endif
+"endfunction
+"
+""}}}
+" Plug 'Shougo/deoplete.nvim' {{{
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option(
+\'sources', {'cpp': ['tag']},
+\'ignore_sources', {'_': ['around', 'buffer']},
+\'smart_case', v:true,
+\)
+" Plug 't9md/vim-choosewin' }}}
+" Plug 'weilbith/nerdtree_choosewin-plugin' {{{
+nmap  -  <Plug>(choosewin)
+let g:choosewin_overlay_enable = 1
+" }}}
+" Plug 'itchyny/lightline.vim' {{{
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \           [ 'readonly', 'filename', 'modified', 'method' ] ]
+      \ },
+      \ 'component_function': {
+      \   'method': 'NearestMethodOrFunction'
+      \ },
+      \ }
+" }}}
+"" Plug 'liuchengxu/eleline.vim' {{{
+"let g:eleline_powerline_fonts = 1
+"" }}}
