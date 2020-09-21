@@ -58,7 +58,8 @@ Plug 'chrisbra/vim-diff-enhanced'
 " Or build from source code by use yarn: https://yarnpkg.com
 "Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 "Plug 'jackguo380/vim-lsp-cxx-highlight'
-Plug 'liuchengxu/vista.vim'
+"Plug 'liuchengxu/vista.vim'
+Plug 'majutsushi/tagbar'
 Plug 'rking/ag.vim'
 "Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'TaDaa/vimade'
@@ -72,7 +73,7 @@ Plug 'liuchengxu/vim-clap'
 "Plug 'zefei/vim-wintabs-powerline'
 Plug 'mhinz/vim-startify'
 Plug 't9md/vim-choosewin'
-Plug 'weilbith/nerdtree_choosewin-plugin'
+"Plug 'weilbith/nerdtree_choosewin-plugin'
 call plug#end()
 "}}}
 
@@ -363,9 +364,11 @@ nnoremap <silent> <leader>gr :Gremove<CR>
 autocmd FileType gitcommit nmap <buffer> U :Git checkout -- <C-r><C-g><CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 " }}}
-"" Tagbar {{{
-"nnoremap <leader>t :TagbarToggle<CR>
-"" }}}
+" tagbar {{{
+noremap <leader>t :TagbarToggle<CR>
+let g:tagbar_width = 80
+let g:tagbar_autoshowtag = 1
+" }}}
 " airline {{{
 "let g:airline_powerline_fonts = 1
 let g:airline_theme = 'papercolor'
@@ -649,29 +652,29 @@ endif
 "let g:cpp_experimental_template_highlight = 1
 "let g:cpp_concepts_highlight = 1
 ""}}}
-"liuchengxu/vista.vim {{{
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-endfunction
-set statusline+=%{NearestMethodOrFunction()}
-autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
-
-" Width of vista sidebar.
-let g:vista_sidebar_width = 80
-" Time delay for showing detailed symbol info at current cursor.
-let g:vista_cursor_delay = 400
-" Blinking cursor 2 times with 100ms interval after jumping to the tag.
-let g:vista_blink = [2, 100]
-" To enable fzf's preview window set g:vista_fzf_preview.
-" The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
-" For example:
-let g:vista_fzf_preview = ['right:50%']
-
-"let g:vista_default_executive = 'ctags'
-"nnoremap <leader>t :Vista finder ctags<CR>
-"nnoremap <leader>t :Vista finder coc<CR>
-nnoremap <leader>t :Vista!!<CR>
-"}}}
+""liuchengxu/vista.vim {{{
+"function! NearestMethodOrFunction() abort
+"  return get(b:, 'vista_nearest_method_or_function', '')
+"endfunction
+"set statusline+=%{NearestMethodOrFunction()}
+"autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+"
+"" Width of vista sidebar.
+"let g:vista_sidebar_width = 80
+"" Time delay for showing detailed symbol info at current cursor.
+"let g:vista_cursor_delay = 400
+"" Blinking cursor 2 times with 100ms interval after jumping to the tag.
+"let g:vista_blink = [2, 100]
+"" To enable fzf's preview window set g:vista_fzf_preview.
+"" The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
+"" For example:
+"let g:vista_fzf_preview = ['right:50%']
+"
+""let g:vista_default_executive = 'ctags'
+""nnoremap <leader>t :Vista finder ctags<CR>
+""nnoremap <leader>t :Vista finder coc<CR>
+"nnoremap <leader>t :Vista!!<CR>
+""}}}
 "" itchyny/calendar.vim {{{
 "let g:calendar_google_calendar = 1
 "let g:calendar_google_task = 1
@@ -733,8 +736,11 @@ call deoplete#custom#option(
 \'ignore_sources', {'_': ['around', 'buffer']},
 \'smart_case', v:true,
 \)
-" Plug 't9md/vim-choosewin' }}}
-" Plug 'weilbith/nerdtree_choosewin-plugin' {{{
+call deoplete#custom#source('buffer',
+\ 'filetypes', ['c', 'cpp'])
+set completeopt-=preview
+"}}}
+" Plug 't9md/vim-choosewin' {{{
 nmap  -  <Plug>(choosewin)
 let g:choosewin_overlay_enable = 1
 " }}}
@@ -753,3 +759,6 @@ let g:lightline = {
 "" Plug 'liuchengxu/eleline.vim' {{{
 "let g:eleline_powerline_fonts = 1
 "" }}}
+" Plug 'liuchengxu/vim-clap' {{{
+let g:clap_theme = 'material_design_dark'
+" }}}
