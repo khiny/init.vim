@@ -12,7 +12,7 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'arzg/vim-substrata'
 "Plug 'drewtempelmeyer/palenight.vim'
 "Plug 'rakr/vim-one'
-"Plug 'joshdick/onedark.vim/'
+Plug 'joshdick/onedark.vim/'
 "Plug 'bluz71/vim-moonfly-colors'
 "Plug 'bluz71/vim-moonfly-statusline'
 Plug 'inkarkat/vim-mark'
@@ -74,6 +74,12 @@ Plug 'liuchengxu/vim-clap'
 Plug 'mhinz/vim-startify'
 Plug 't9md/vim-choosewin'
 "Plug 'weilbith/nerdtree_choosewin-plugin'
+Plug 'folke/twilight.nvim'
+Plug 'folke/zen-mode.nvim'
+Plug 'cossonleo/dirdiff.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'TimUntersberger/neogit'
+Plug 'neovim/nvim-lspconfig'
 call plug#end()
 "}}}
 
@@ -159,6 +165,9 @@ colorscheme PaperColor
 "colorscheme substrata
 "colorscheme moonfly
 "colorscheme palenight
+"colorscheme onedark
+"au Bufenter *.txt colorscheme PaperColor
+"au Bufenter *.txt set background=light
 
 "au GUIEnter * simalt ~x
 "inoremap <A-Up> call GuiWindowFullScreen(1)
@@ -169,10 +178,10 @@ set laststatus=2
 set viminfo+=!
 set list listchars=tab:»\ ,trail:·
 
-augroup XML
-  autocmd!
-  autocmd FileType xml setlocal foldmethod=indent foldlevelstart=999 foldminlines=0
-augroup END
+"augroup XML
+"  autocmd!
+"  autocmd FileType xml setlocal foldmethod=indent foldlevelstart=999 foldminlines=0
+"augroup END
 
 "set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 set guicursor=i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
