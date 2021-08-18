@@ -112,19 +112,13 @@ autocmd BufEnter * if &diff | set nonu | else | set nu | endif
 "set rnu
 set showmatch           " highlight matching [{()}]
 set ignorecase
-au Bufenter *.c set tabstop=2
-au Bufenter *.c set shiftwidth=2
-au Bufenter *.c set softtabstop=2
-au Bufenter *.cpp set tabstop=4
-au Bufenter *.cpp set shiftwidth=4
-au Bufenter *.cpp set softtabstop=4
-au Bufenter *.h set tabstop=2
-au Bufenter *.h set shiftwidth=2
-au Bufenter *.h set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set autoindent
 set cindent
 set smartindent
-au Bufenter *.\(c\|cpp\|h\) set et
+set et
 set nobackup
 set nowritebackup
 set fenc=utf-8
@@ -203,6 +197,9 @@ set hidden  "for coc.nvim
 if has('win32')
   let g:python3_host_prog = 'c:\Program Files\Python37\python'  " Python 3
   let g:python_host_prog = 'c:\Python27\python'  " Python 2
+elseif has('mac')
+  let g:python3_host_prog = '/usr/local/bin/python3'  " Python 3
+  let g:python_host_prog = '/usr/bin/python2'  " Python 2
 else
   let g:python3_host_prog = '/home/linuxbrew/.linuxbrew/bin/python3'  " Python 3
   let g:python_host_prog = '/home/linuxbrew/.linuxbrew/bin/python2'  " Python 2
